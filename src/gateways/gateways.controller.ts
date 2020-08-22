@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { GatewaysService } from './gateways.service';
 import { Gateway } from './schemas/gateway.schema';
 import { CreateGatewayDto } from './dto/create-gateway.dto';
-import { ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { UpdateGatewayDto } from './dto/update-gateway.dto';
 
 @ApiTags('Gateways')
 @Controller('gateways')
@@ -16,8 +17,32 @@ export class GatewaysController {
   }
 
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiNotFoundResponse({description: 'No Found Gateway by Id'})
+  @Get(':id')
+  async findById(@Param('id') id: string): Promise<Gateway> {
+    return this.gatewaysService.findById(id);
+  }
+
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Post()
   async create(@Body() createGatewayDto: CreateGatewayDto) {
-    await this.gatewaysService.create(createGatewayDto);
+    return await this.gatewaysService.create(createGatewayDto);
+  }
+
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiNotFoundResponse({description: 'No Found Gateway by Id'})
+  @Put(':id')
+  async update(
+    @Body() updateGatewayDto: UpdateGatewayDto,
+    @Param('id') id: string,
+  ): Promise<Gateway> {
+    return await this.gatewaysService.update(updateGatewayDto, id);
+  }
+
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiNotFoundResponse({description: 'No Found Gateway by Id'})
+  @Delete(':id')
+  async delete(@Param('id') id: string): Promise<Gateway> {
+    return await this.gatewaysService.delete(id);
   }
 }
