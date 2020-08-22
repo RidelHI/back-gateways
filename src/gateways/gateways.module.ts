@@ -15,5 +15,6 @@ import { Gateway, GatewaySchema } from './schemas/gateway.schema';
   ],
   controllers: [GatewaysController],
   providers: [GatewaysService],
+  exports: [GatewaysService]
 })
 export class GatewaysModule {}

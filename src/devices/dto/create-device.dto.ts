@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNumberString, IsString } from 'class-validator';
 
 export class CreateDeviceDto {
   @ApiProperty({ description: 'UID number' })
-  @IsNumber()
+  @IsNumberString()
   readonly uid: number;
 
   @ApiProperty({ description: 'Vendor' })
@@ -14,6 +14,6 @@ export class CreateDeviceDto {
   readonly createdDate: Date;
 
   @ApiProperty({ description: 'Status (online/offline)' })
-  @IsString()
+  @IsEnum(['online', 'offline'])
   readonly status: string;
 }

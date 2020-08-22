@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 
-@Schema()
+@Schema({ timestamps: true })
 export class Gateway extends Document {
-  @Prop()
+  @Prop({ unique: true })
   serialNumber: string;
 
   @Prop()
@@ -13,7 +13,7 @@ export class Gateway extends Document {
   ipv4Address: string;
 
   @Prop([{ type: MongooseSchema.Types.ObjectId, ref: 'Device' }])
-  devices: MongooseSchema.Types.ObjectId;
+  devices: [{ type: MongooseSchema.Types.ObjectId; ref: 'Device' }];
 }
 
 export const GatewaySchema = SchemaFactory.createForClass(Gateway);

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Gateway } from './schemas/gateway.schema';
 import { Model } from 'mongoose';
@@ -32,6 +36,16 @@ export class GatewaysService {
 
   async create(createGatewayDto: CreateGatewayDto): Promise<Gateway> {
     const createdGateway = new this.gatewayModel(createGatewayDto);
+
+    const findGateway = await this.gatewayModel.find({
+      serialNumber: createGatewayDto.serialNumber,
+    });
+    if (findGateway) {
+      throw new BadRequestException(
+        `There is already a Gateway with a serial number: ${createGatewayDto.serialNumber}`,
+      );
+    }
+
     return await createdGateway.save();
   }
 

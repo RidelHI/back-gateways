@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Gateway } from '../../gateways/schemas/gateway.schema';
 
-@Schema()
+@Schema({ timestamps: true })
 export class Device extends Document {
   @Prop()
   uid: number;
@@ -9,14 +10,18 @@ export class Device extends Document {
   @Prop()
   vendor: string;
 
-  @Prop()
+  @Prop({ type: Date })
   createdDate: Date;
 
-  @Prop()
+  @Prop({
+    type: String,
+    enum: ['online', 'offline'],
+    default: 'offline',
+  })
   status: string;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Person' })
-  gateway: { type: MongooseSchema.Types.ObjectId; ref: 'Person' };
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Gateway' })
+  gateway: { type: MongooseSchema.Types.ObjectId; ref: 'Gateway' };
 }
 
 export const DeviceSchema = SchemaFactory.createForClass(Device);
