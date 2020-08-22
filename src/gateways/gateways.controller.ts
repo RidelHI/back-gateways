@@ -4,6 +4,7 @@ import { Gateway } from './schemas/gateway.schema';
 import { CreateGatewayDto } from './dto/create-gateway.dto';
 import { ApiNotFoundResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { UpdateGatewayDto } from './dto/update-gateway.dto';
+import { Device } from '../devices/schemas/device.schema';
 
 @ApiTags('Gateways')
 @Controller('gateways')
@@ -21,6 +22,13 @@ export class GatewaysController {
   @Get(':id')
   async findById(@Param('id') id: string): Promise<Gateway> {
     return this.gatewaysService.findById(id);
+  }
+
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiNotFoundResponse({description: 'No Found Gateway by Id'})
+  @Get(':id/devices')
+  async findDevicesFromGateway(@Param('id') id: string): Promise<Device[]> {
+    return await this.gatewaysService.findDevicesFromGateway(id);
   }
 
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })

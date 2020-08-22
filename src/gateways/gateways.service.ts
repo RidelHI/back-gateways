@@ -12,7 +12,10 @@ export class GatewaysService {
   ) {}
 
   async findAll(): Promise<Gateway[]> {
-    return this.gatewayModel.find().exec();
+    return this.gatewayModel
+      .find()
+      .populate('devices')
+      .exec();
   }
 
   async findById(id: string): Promise<Gateway> {
@@ -52,5 +55,10 @@ export class GatewaysService {
   async delete(id: string): Promise<Gateway> {
     const gateway = await this.findById(id);
     return await gateway.remove();
+  }
+
+  async findDevicesFromGateway(id: string): Promise<any> {
+    const gateway = await this.findById(id);
+    return gateway.devices;
   }
 }
