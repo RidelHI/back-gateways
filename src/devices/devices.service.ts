@@ -9,7 +9,6 @@ import { Model } from 'mongoose';
 import { Device } from './schemas/device.schema';
 import { CreateDeviceDto } from './dto/create-device.dto';
 import { UpdateDeviceDto } from './dto/update-device.dto';
-import { Gateway } from '../gateways/schemas/gateway.schema';
 import { GatewaysService } from '../gateways/gateways.service';
 
 @Injectable()
@@ -81,7 +80,7 @@ export class DevicesService {
       return removedDevice;
     } catch (e) {
       throw new InternalServerErrorException(
-        `An error occurred while removing gateway: ${gatewayId} and device: ${deviceId}`,
+        `An error occurred while removing with data (gateway: ${gatewayId} and device: ${deviceId})`,
       );
     }
   }

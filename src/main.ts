@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as helmet from 'helmet';
 
 const logger = new Logger('bootstrap');
 
@@ -11,6 +12,9 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const port = configService.get('app.port');
+
+  app.use(helmet());
+  app.enableCors();
 
   app.setGlobalPrefix('api');
   app.useGlobalPipes(
