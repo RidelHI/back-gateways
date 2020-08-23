@@ -30,12 +30,9 @@ export class DevicesController {
   }
 
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  @Post(':id')
-  async create(
-    @Body() createDeviceDto: CreateDeviceDto,
-    @Param('id') idGateway: string,
-  ) {
-    return await this.devicesService.create(createDeviceDto, idGateway);
+  @Post()
+  async create(@Body() createDeviceDto: CreateDeviceDto) {
+    return await this.devicesService.create(createDeviceDto);
   }
 
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })

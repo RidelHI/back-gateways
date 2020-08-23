@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Device } from './schemas/device.schema';
@@ -26,11 +26,12 @@ export class DevicesService {
     return device;
   }
 
-  async create(createDeviceDto: CreateDeviceDto, idGateway): Promise<Device> {
-    const gateway: Gateway = await this.gatewayService.findById(idGateway);
+  async create(createDeviceDto: CreateDeviceDto): Promise<Device> {
+    const gateway: Gateway = await this.gatewayService.findById(
+      createDeviceDto.gatewayId,
+    );
 
     const device = new this.deviceModel(createDeviceDto);
-    device.gateway = idGateway;
     const createdDevice = await device.save();
 
     gateway.devices.push(createdDevice._id);

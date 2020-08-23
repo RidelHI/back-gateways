@@ -5,10 +5,7 @@ import { Gateway } from './schemas/gateway.schema';
 
 describe('GatewaysService', () => {
   let service: GatewaysService;
-  const modelGateway = () => ({
-
-  });
-
+  const modelGateway = () => ({});
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

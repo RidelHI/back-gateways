@@ -40,7 +40,7 @@ export class GatewaysService {
     const findGateway = await this.gatewayModel.find({
       serialNumber: createGatewayDto.serialNumber,
     });
-    if (findGateway) {
+    if (findGateway && findGateway.length > 0) {
       throw new BadRequestException(
         `There is already a Gateway with a serial number: ${createGatewayDto.serialNumber}`,
       );

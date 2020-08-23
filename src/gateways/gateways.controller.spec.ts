@@ -10,9 +10,7 @@ describe('Gateways Controller', () => {
   let gatewaysController: GatewaysController;
   let gatewayModel: Model<Gateway>;
 
-  const modelGateway = () => ({
-
-  });
+  const modelGateway = () => ({});
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

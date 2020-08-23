@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNumberString, IsString } from 'class-validator';
+import { IsEnum, IsMongoId, IsNumberString, IsString } from 'class-validator';
 
 export class CreateDeviceDto {
   @ApiProperty({ description: 'UID number' })
@@ -16,4 +16,8 @@ export class CreateDeviceDto {
   @ApiProperty({ description: 'Status (online/offline)' })
   @IsEnum(['online', 'offline'])
   readonly status: string;
+
+  @ApiProperty({ description: 'Gateway Id (owner)' })
+  @IsMongoId()
+  readonly gatewayId: string;
 }
