@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -31,16 +32,26 @@ export class DevicesService {
   }
 
   async create(createDeviceDto: CreateDeviceDto): Promise<Device> {
-    const gateway: Gateway = await this.gatewayService.findById(
+    const countDevices = await this.gatewayService.countTotalDevicesByGatewayId(
       createDeviceDto.gatewayId,
     );
 
-    const device = new this.deviceModel(createDeviceDto);
-    const createdDevice = await device.save();
+    if (countDevices < 10) {
+      const gateway = await this.gatewayService.findById(
+        createDeviceDto.gatewayId,
+      );
 
-    gateway.devices.push(createdDevice._id);
-    await gateway.save();
-    return createdDevice;
+      const device = new this.deviceModel(createDeviceDto);
+      const createdDevice = await device.save();
+
+      gateway.devices.push(createdDevice._id);
+      await gateway.save();
+      return createdDevice;
+    }
+
+    throw new BadRequestException(
+      'No more that 10 peripheral devices are allowed for a gateway',
+    );
   }
 
   async update(updateDeviceDto: UpdateDeviceDto, id: string): Promise<Device> {

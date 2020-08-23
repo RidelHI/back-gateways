@@ -80,5 +80,15 @@ export class GatewaysService {
     await this.gatewayModel.findByIdAndUpdate(gatewayId, {
       $pull: { devices: deviceId },
     });
+
+    await this.countTotalDevicesByGatewayId(gatewayId);
+  }
+
+  async countTotalDevicesByGatewayId(gatewayId): Promise<number> {
+    const count = await this.gatewayModel.aggregate([
+      { $project: { count: { $size: '$devices' } } },
+    ]);
+
+    return count[0].count;
   }
 }
