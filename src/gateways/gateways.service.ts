@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Gateway } from './schemas/gateway.schema';
-import { Model } from 'mongoose';
+import { Model, Schema as MongooseSchema } from 'mongoose';
 import { CreateGatewayDto } from './dto/create-gateway.dto';
 import { UpdateGatewayDto } from './dto/update-gateway.dto';
 
@@ -74,5 +74,11 @@ export class GatewaysService {
   async findDevicesFromGateway(id: string): Promise<any> {
     const gateway = await this.findById(id);
     return gateway.devices;
+  }
+
+  async removeDeviceFromGateway(gatewayId, deviceId) {
+    await this.gatewayModel.findByIdAndUpdate(gatewayId, {
+      $pull: { devices: deviceId },
+    });
   }
 }

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Device } from './schemas/device.schema';
@@ -56,5 +60,18 @@ export class DevicesService {
   async delete(id: string): Promise<Device> {
     const device = await this.findById(id);
     return await device.remove();
+  }
+
+  async deleteDeviceByIdGateway(deviceId, gatewayId): Promise<Device> {
+    try {
+      const removedDevice = await this.delete(deviceId);
+      await this.gatewayService.removeDeviceFromGateway(gatewayId, deviceId);
+
+      return removedDevice;
+    } catch (e) {
+      throw new InternalServerErrorException(
+        `An error occurred while removing gateway: ${gatewayId} and device: ${deviceId}`,
+      );
+    }
   }
 }

@@ -51,4 +51,17 @@ export class DevicesController {
   async delete(@Param('id') id: string): Promise<Device> {
     return await this.devicesService.delete(id);
   }
+
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiNotFoundResponse({ description: 'No Found Device by Id' })
+  @Delete(':deviceId/gateways/:gatewayId')
+  async deleteDeviceByIdGateway(
+    @Param('deviceId') deviceId: string,
+    @Param('gatewayId') gatewayId: string,
+  ): Promise<Device> {
+    return await this.devicesService.deleteDeviceByIdGateway(
+      deviceId,
+      gatewayId,
+    );
+  }
 }
