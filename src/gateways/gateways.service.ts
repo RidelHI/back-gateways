@@ -53,6 +53,16 @@ export class GatewaysService {
     updateGatewayDto: UpdateGatewayDto,
     id: string,
   ): Promise<Gateway> {
+
+    const findGateway = await this.gatewayModel.find({
+      serialNumber: updateGatewayDto.serialNumber,
+    });
+    if (findGateway && findGateway.length > 0) {
+      throw new BadRequestException(
+        `There is already a Gateway with a serial number: ${updateGatewayDto.serialNumber}`,
+      );
+    }
+
     const gateway = await this.gatewayModel.findOneAndUpdate(
       { _id: id },
       { $set: updateGatewayDto },
