@@ -8,9 +8,9 @@ import {
   Put,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiNotFoundResponse,
   ApiTags,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { Device } from './schemas/device.schema';
 import { DevicesService } from './devices.service';
@@ -22,20 +22,19 @@ import { UpdateDeviceDto } from './dto/update-device.dto';
 export class DevicesController {
   constructor(private readonly devicesService: DevicesService) {}
 
-  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiNotFoundResponse({ description: 'No Found Device by Id' })
   @Get(':id')
   async findById(@Param('id') id: string): Promise<Device> {
     return this.devicesService.findById(id);
   }
 
-  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiBadRequestResponse({ description: 'Bad data in request' })
   @Post()
   async create(@Body() createDeviceDto: CreateDeviceDto) {
     return await this.devicesService.create(createDeviceDto);
   }
 
-  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiBadRequestResponse({ description: 'Bad data in request' })
   @ApiNotFoundResponse({ description: 'No Found Device by Id' })
   @Put(':id')
   async update(
@@ -45,14 +44,12 @@ export class DevicesController {
     return await this.devicesService.update(updateDeviceDto, id);
   }
 
-  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiNotFoundResponse({ description: 'No Found Device by Id' })
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<Device> {
     return await this.devicesService.delete(id);
   }
 
-  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiNotFoundResponse({ description: 'No Found Device by Id' })
   @Delete(':deviceId/gateways/:gatewayId')
   async deleteDeviceByIdGateway(
