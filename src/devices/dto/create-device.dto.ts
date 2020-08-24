@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsMongoId, IsNumberString, IsString } from 'class-validator';
+import { IsDateString, IsEnum, IsMongoId, IsNumberString, IsString } from 'class-validator';
 
 export class CreateDeviceDto {
   @ApiProperty({ description: 'UID number' })
@@ -11,6 +11,7 @@ export class CreateDeviceDto {
   readonly vendor: string;
 
   @ApiProperty({ description: 'Created Date' })
+  @IsDateString()
   readonly createdDate: Date;
 
   @ApiProperty({ description: 'Status (online/offline)' })
