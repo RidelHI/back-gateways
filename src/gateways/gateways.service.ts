@@ -53,7 +53,6 @@ export class GatewaysService {
     updateGatewayDto: UpdateGatewayDto,
     id: string,
   ): Promise<Gateway> {
-
     const findGateway = await this.gatewayModel.find({
       serialNumber: updateGatewayDto.serialNumber,
     });
@@ -95,10 +94,7 @@ export class GatewaysService {
   }
 
   async countTotalDevicesByGatewayId(gatewayId): Promise<number> {
-    const count = await this.gatewayModel.aggregate([
-      { $project: { count: { $size: '$devices' } } },
-    ]);
-
-    return count[0].count;
+    const gateway = await this.gatewayModel.findById(gatewayId);
+    return gateway.devices.length;
   }
 }
