@@ -12,3 +12,13 @@ Backend project for the management of gateways and associated devices
 # development
 $ npm run start
 ```
+
+The rest service runs on http://localhost:3001
+
+## Access to Api documentation
+
+http://localhost:3001/api/doc/
+
+## Import the API Postman Collection
+
+https://www.getpostman.com/collections/375abbb219cdad622b8e
